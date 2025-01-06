@@ -2,49 +2,49 @@
   <div class="header">
     <div class="header-title">
       <h1>My Flashcards</h1>
-      <div class="tag-filters">
-        <div class="selected-tags" *ngIf="selectedTags.length > 0">
-          <mat-chip-listbox>
-            <mat-chip-option *ngFor="let tag of selectedTags" [selected]="true" (removed)="toggleTag(tag)">
-              {{tag}}
-              <button matChipRemove>
-                <mat-icon>cancel</mat-icon>
-              </button>
-            </mat-chip-option>
-          </mat-chip-listbox>
-        </div>
-      
-        <mat-form-field class="tag-search">
-          <mat-label>Search tags</mat-label>
-          <input matInput [ngModel]="tagSearchQuery" (ngModelChange)="filterTagsBySearch($event)" [matAutocomplete]="auto"
-            (focus)="onTagSearchFocus()" placeholder="Type to search tags...">
-          <mat-icon matSuffix>search</mat-icon>
-          <mat-autocomplete #auto="matAutocomplete" class="tag-autocomplete">
-            <mat-option *ngFor="let tag of filteredTags" [value]="tag" class="tag-option"
-              (onSelectionChange)="onTagSelected($event)">
-              <span class="popular-indicator" *ngIf="popularTags.includes(tag)"></span>
-              {{tag}}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
+      <div class="header-actions">
+        <button mat-raised-button color="accent" routerLink="review">
+          <mat-icon>school</mat-icon>
+          Start Review
+        </button>
+        <button mat-raised-button color="primary" routerLink="create">
+          <mat-icon>add</mat-icon>
+          Create New Card
+        </button>
+      </div>
+      </div>
+    <div class="tag-filters">
+      <div class="selected-tags" *ngIf="selectedTags.length > 0">
         <mat-chip-listbox>
-          <mat-chip-option *ngFor="let tag of availableTags" [selected]="selectedTags.includes(tag)" (click)="toggleTag(tag)"
-            [color]="selectedTags.includes(tag) ? 'primary' : undefined">
+          <mat-chip-option *ngFor="let tag of selectedTags" [selected]="true" (removed)="toggleTag(tag)">
             {{tag}}
-            <span class="popular-badge" *ngIf="popularTags.includes(tag)"></span>
+            <button matChipRemove>
+              <mat-icon>cancel</mat-icon>
+            </button>
           </mat-chip-option>
         </mat-chip-listbox>
       </div>
-      </div>
-    <div class="header-actions">
-      <button mat-raised-button color="accent" routerLink="review">
-        <mat-icon>school</mat-icon>
-        Start Review
-      </button>
-      <button mat-raised-button color="primary" routerLink="create">
-        <mat-icon>add</mat-icon>
-        Create New Card
-      </button>
+    
+      <mat-form-field class="tag-search">
+        <mat-label>Search tags</mat-label>
+        <input matInput [ngModel]="tagSearchQuery" (ngModelChange)="filterTagsBySearch($event)" [matAutocomplete]="auto"
+          (focus)="onTagSearchFocus()" placeholder="Type to search tags...">
+        <mat-icon matSuffix>search</mat-icon>
+        <mat-autocomplete #auto="matAutocomplete" class="tag-autocomplete">
+          <mat-option *ngFor="let tag of filteredTags" [value]="tag" class="tag-option"
+            (onSelectionChange)="onTagSelected($event)">
+            <span class="popular-indicator" *ngIf="popularTags.includes(tag)"></span>
+            {{tag}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <mat-chip-listbox multiple>
+        <mat-chip-option *ngFor="let tag of availableTags" [selected]="selectedTags.includes(tag)" (click)="toggleTag(tag)"
+          [color]="selectedTags.includes(tag) ? 'primary' : undefined">
+          {{tag}}
+          <span class="popular-badge" *ngIf="popularTags.includes(tag)"></span>
+        </mat-chip-option>
+      </mat-chip-listbox>
     </div>
   </div>
 
@@ -59,7 +59,7 @@
           <mat-card-title>Level: {{card.level}}</mat-card-title>
           <mat-card-subtitle>Reviewed: {{card.lastReviewedAt | date:'shortTime'}}</mat-card-subtitle>
           <div class="card-tags">
-            <mat-chip-listbox>
+            <mat-chip-listbox multiple>
               <mat-chip-option *ngFor="let tag of card.tags" [selected]="selectedTags.includes(tag)" (click)="toggleTag(tag)">
                 {{tag}}
               </mat-chip-option>
@@ -103,7 +103,7 @@
           <mat-card-title>Level: {{card.level}}</mat-card-title>
           <mat-card-subtitle>Due: {{card.nextReviewDate | date}}</mat-card-subtitle>
           <div class="card-tags">
-            <mat-chip-listbox>
+            <mat-chip-listbox multiple>
               <mat-chip-option *ngFor="let tag of card.tags" [selected]="selectedTags.includes(tag)" (click)="toggleTag(tag)">
                 {{tag}}
               </mat-chip-option>
@@ -147,7 +147,7 @@
           <mat-card-title>Level: {{card.level}}</mat-card-title>
           <mat-card-subtitle>Next review: {{card.nextReviewDate | date}}</mat-card-subtitle>
           <div class="card-tags">
-            <mat-chip-listbox>
+            <mat-chip-listbox multiple>
               <mat-chip-option *ngFor="let tag of card.tags" [selected]="selectedTags.includes(tag)" (click)="toggleTag(tag)">
                 {{tag}}
               </mat-chip-option>
