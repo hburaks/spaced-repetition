@@ -25,6 +25,30 @@
         font-size: 0.9em;
       }
     }
+
+    .see-more {
+      display: flex;
+      justify-content: center;
+      margin-top: 1rem;
+      
+      button {
+        color: #3498db;
+        font-weight: 500;
+        
+        mat-icon {
+          margin-right: 4px;
+          transition: transform 0.3s ease;
+        }
+
+        &:hover {
+          background: rgba(52, 152, 219, 0.05);
+          
+          mat-icon {
+            transform: translateY(2px);
+          }
+        }
+      }
+    }
   }
 
   .cards-grid {
@@ -71,5 +95,7 @@
       background-color: rgba(76, 175, 80, 0.05);
       border-left: 4px solid #4CAF50;
     }
+
+    transition: all 0.3s ease-in-out;
   }
 } 

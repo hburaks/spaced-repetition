@@ -18,8 +18,8 @@
       Today's Reviews
       <span class="card-count">({{reviewedCards.length}} cards)</span>
     </h2>
-    <div class="cards-grid">
-      <mat-card *ngFor="let card of reviewedCards" class="reviewed-card">
+    <div class="cards-grid" [@cardList]="reviewedCardsExpanded">
+      <mat-card *ngFor="let card of visibleReviewedCards" class="reviewed-card">
         <mat-card-header>
           <mat-card-title>Level: {{card.level}}</mat-card-title>
           <mat-card-subtitle>Reviewed: {{card.lastReviewedAt | date:'shortTime'}}</mat-card-subtitle>
@@ -42,6 +42,12 @@
         </mat-card-actions>
       </mat-card>
     </div>
+    <div class="see-more" *ngIf="reviewedCards.length > PAGE_SIZE">
+      <button mat-button (click)="toggleSection('reviewed')">
+        <mat-icon>{{ reviewedCardsExpanded ? 'expand_less' : 'expand_more' }}</mat-icon>
+        {{ reviewedCardsExpanded ? 'Show Less' : 'Show More' }}
+      </button>
+    </div>
   </div>
 
   <div class="cards-section">
@@ -49,8 +55,8 @@
       Due for Review
       <span class="card-count">({{dueCards.length}} cards)</span>
     </h2>
-    <div class="cards-grid">
-      <mat-card *ngFor="let card of dueCards">
+    <div class="cards-grid" [@cardList]="dueCardsExpanded">
+      <mat-card *ngFor="let card of visibleDueCards">
         <mat-card-header>
           <mat-card-title>Level: {{card.level}}</mat-card-title>
           <mat-card-subtitle>Due: {{card.nextReviewDate | date}}</mat-card-subtitle>
@@ -73,6 +79,12 @@
         </mat-card-actions>
       </mat-card>
     </div>
+    <div class="see-more" *ngIf="dueCards.length > PAGE_SIZE">
+      <button mat-button (click)="toggleSection('due')">
+        <mat-icon>{{ dueCardsExpanded ? 'expand_less' : 'expand_more' }}</mat-icon>
+        {{ dueCardsExpanded ? 'Show Less' : 'Show More' }}
+      </button>
+    </div>
   </div>
 
   <div class="cards-section">
@@ -80,8 +92,8 @@
       Upcoming Reviews
       <span class="card-count">({{upcomingCards.length}} cards)</span>
     </h2>
-    <div class="cards-grid">
-      <mat-card *ngFor="let card of upcomingCards">
+    <div class="cards-grid" [@cardList]="upcomingCardsExpanded">
+      <mat-card *ngFor="let card of visibleUpcomingCards">
         <mat-card-header>
           <mat-card-title>Level: {{card.level}}</mat-card-title>
           <mat-card-subtitle>Next review: {{card.nextReviewDate | date}}</mat-card-subtitle>
@@ -103,6 +115,12 @@
           </button>
         </mat-card-actions>
       </mat-card>
+    </div>
+    <div class="see-more" *ngIf="upcomingCards.length > PAGE_SIZE">
+      <button mat-button (click)="toggleSection('upcoming')">
+        <mat-icon>{{ upcomingCardsExpanded ? 'expand_less' : 'expand_more' }}</mat-icon>
+        {{ upcomingCardsExpanded ? 'Show Less' : 'Show More' }}
+      </button>
     </div>
   </div>
 </div>
