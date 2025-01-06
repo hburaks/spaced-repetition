@@ -1,25 +1,46 @@
-<div class="mat-card">
-  <div class="mat-card-header">
-    <div class="mat-card-title">Create New Flashcard</div>
-  </div>
-  <div class="mat-card-content">
-    <form [formGroup]="cardForm" (ngSubmit)="onSubmit()">
-      <mat-form-field appearance="outline">
-        <mat-label>Front</mat-label>
-        <textarea matInput formControlName="front" rows="3"></textarea>
-        <mat-error *ngIf="cardForm.get('front')?.errors?.['required']">Front content is required</mat-error>
-      </mat-form-field>
+<div class="create-card-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Create New Card</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="cardForm" (ngSubmit)="onSubmit()">
+        <mat-form-field>
+          <mat-label>Question</mat-label>
+          <textarea matInput formControlName="front" rows="3"></textarea>
+        </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Back</mat-label>
-        <textarea matInput formControlName="back" rows="3"></textarea>
-        <mat-error *ngIf="cardForm.get('back')?.errors?.['required']">Back content is required</mat-error>
-      </mat-form-field>
+        <mat-form-field>
+          <mat-label>Answer</mat-label>
+          <textarea matInput formControlName="back" rows="3"></textarea>
+        </mat-form-field>
+        
+        <mat-form-field>
+          <mat-label>Add tags</mat-label>
+          <mat-chip-grid #chipGrid>
+            <mat-chip-row *ngFor="let tag of selectedTags" (removed)="removeTag(tag)">
+              {{tag}}
+              <button matChipRemove>
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip-row>
+          </mat-chip-grid>
+          <input placeholder="New tag..." [matChipInputFor]="chipGrid" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            [matAutocomplete]="auto" [formControl]="tagCtrl" (matChipInputTokenEnd)="addTag($event)">
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedTag($event)">
+            <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
+              {{tag}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
 
-      <div class="actions">
-        <button mat-button routerLink="/cards">Cancel</button>
-        <button mat-raised-button color="primary" type="submit" [disabled]="!cardForm.valid">Create</button>
-      </div>
-    </form>
-  </div>
+        <div class="form-actions">
+          <button mat-button type="button" routerLink="..">Cancel</button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="!cardForm.valid">
+            Create Card
+          </button>
+        </div>
+        </form>
+    </mat-card-content>
+    </mat-card>
 </div>

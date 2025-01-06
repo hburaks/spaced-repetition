@@ -20,6 +20,7 @@ export class CardsService {
       createdAt: new Date(),
       updatedAt: new Date(),
       lastReviewedAt: null,
+      tags: ['Angular', 'Framework', 'Basics'],
     },
     {
       id: '2',
@@ -31,6 +32,7 @@ export class CardsService {
       createdAt: new Date(),
       updatedAt: new Date(),
       lastReviewedAt: null,
+      tags: ['TypeScript', 'Programming Language', 'Basics'],
     },
     {
       id: '3',
@@ -42,6 +44,7 @@ export class CardsService {
       createdAt: new Date(),
       updatedAt: new Date(),
       lastReviewedAt: null,
+      tags: ['RxJS', 'Library', 'Reactive Programming'],
     },
     {
       id: '4',
@@ -53,6 +56,7 @@ export class CardsService {
       createdAt: new Date(),
       updatedAt: new Date(),
       lastReviewedAt: new Date(), // Reviewed today
+      tags: ['NgRx', 'Framework', 'Reactive Programming'],
     },
     {
       id: '5',
@@ -64,6 +68,7 @@ export class CardsService {
       createdAt: new Date(),
       updatedAt: new Date(),
       lastReviewedAt: null,
+      tags: ['Dependency Injection', 'Design Pattern', 'Angular'],
     },
     {
       id: '6',
@@ -75,6 +80,7 @@ export class CardsService {
       createdAt: new Date(),
       updatedAt: new Date(),
       lastReviewedAt: null,
+      tags: ['Pure Function', 'Programming', 'Basics'],
     },
     {
       id: '7',
@@ -86,6 +92,7 @@ export class CardsService {
       createdAt: new Date(),
       updatedAt: new Date(),
       lastReviewedAt: null,
+      tags: ['JavaScript', 'Basics', 'Variables'],
     },
     {
       id: '8',
@@ -97,6 +104,7 @@ export class CardsService {
       createdAt: new Date(),
       updatedAt: new Date(),
       lastReviewedAt: null,
+      tags: ['NgModule', 'Angular', 'Basics'],
     },
     {
       id: '9',
@@ -108,6 +116,7 @@ export class CardsService {
       createdAt: new Date(),
       updatedAt: new Date(),
       lastReviewedAt: new Date(),
+      tags: ['Observable', 'Promise', 'Reactive Programming'],
     },
     {
       id: '10',
@@ -119,6 +128,7 @@ export class CardsService {
       createdAt: new Date(),
       updatedAt: new Date(),
       lastReviewedAt: null,
+      tags: ['Async Pipe', 'Angular', 'Templates'],
     },
     {
       id: '11',
@@ -130,6 +140,7 @@ export class CardsService {
       createdAt: new Date(),
       updatedAt: new Date(),
       lastReviewedAt: null,
+      tags: ['Tree Shaking', 'Bundling', 'Optimization'],
     },
     {
       id: '12',
@@ -141,6 +152,7 @@ export class CardsService {
       createdAt: new Date(),
       updatedAt: new Date(),
       lastReviewedAt: null,
+      tags: ['ViewChild', 'Angular', 'Basics'],
     },
     {
       id: '13',
@@ -152,6 +164,7 @@ export class CardsService {
       createdAt: new Date(),
       updatedAt: new Date(),
       lastReviewedAt: null,
+      tags: ['Content Projection', 'Angular', 'Basics'],
     },
     {
       id: '14',
@@ -163,6 +176,7 @@ export class CardsService {
       createdAt: new Date(),
       updatedAt: new Date(),
       lastReviewedAt: new Date(),
+      tags: ['ngOnInit', 'Constructor', 'Angular'],
     },
     {
       id: '15',
@@ -174,6 +188,7 @@ export class CardsService {
       createdAt: new Date(),
       updatedAt: new Date(),
       lastReviewedAt: null,
+      tags: ['Angular Pipes', 'Basics', 'Templates'],
     },
     {
       id: '16',
@@ -185,6 +200,7 @@ export class CardsService {
       createdAt: new Date(),
       updatedAt: new Date(),
       lastReviewedAt: new Date(),
+      tags: ['Angular Change Detection', 'Basics', 'Performance'],
     },
     // More cards for testing pagination
     ...Array.from({ length: 25 }, (_, i) => ({
@@ -197,6 +213,28 @@ export class CardsService {
       createdAt: new Date(),
       updatedAt: new Date(),
       lastReviewedAt: null,
+      tags: Array.from(
+        { length: Math.min(3, Math.floor(Math.random() * 3) + 1) },
+        () => {
+          const adjectives = [
+            'Interesting',
+            'Useful',
+            'Educational',
+            'Fun',
+            'Challenging',
+          ];
+          const nouns = [
+            'Concept',
+            'Technology',
+            'Framework',
+            'Language',
+            'Pattern',
+          ];
+          return `${
+            adjectives[Math.floor(Math.random() * adjectives.length)]
+          } ${nouns[Math.floor(Math.random() * nouns.length)]}`;
+        }
+      ),
     })),
     ...Array.from({ length: 25 }, (_, i) => ({
       id: `reviewed-${i + 42}`,
@@ -208,6 +246,28 @@ export class CardsService {
       createdAt: new Date(),
       updatedAt: new Date(),
       lastReviewedAt: new Date(),
+      tags: Array.from(
+        { length: Math.min(3, Math.floor(Math.random() * 3) + 1) },
+        () => {
+          const adjectives = [
+            'Interesting',
+            'Useful',
+            'Educational',
+            'Fun',
+            'Challenging',
+          ];
+          const nouns = [
+            'Concept',
+            'Technology',
+            'Framework',
+            'Language',
+            'Pattern',
+          ];
+          return `${
+            adjectives[Math.floor(Math.random() * adjectives.length)]
+          } ${nouns[Math.floor(Math.random() * nouns.length)]}`;
+        }
+      ),
     })),
     ...Array.from({ length: 25 }, (_, i) => ({
       id: `upcoming-${i + 67}`,
@@ -219,6 +279,28 @@ export class CardsService {
       createdAt: new Date(),
       updatedAt: new Date(),
       lastReviewedAt: null,
+      tags: Array.from(
+        { length: Math.min(3, Math.floor(Math.random() * 3) + 1) },
+        () => {
+          const adjectives = [
+            'Interesting',
+            'Useful',
+            'Educational',
+            'Fun',
+            'Challenging',
+          ];
+          const nouns = [
+            'Concept',
+            'Technology',
+            'Framework',
+            'Language',
+            'Pattern',
+          ];
+          return `${
+            adjectives[Math.floor(Math.random() * adjectives.length)]
+          } ${nouns[Math.floor(Math.random() * nouns.length)]}`;
+        }
+      ),
     })),
   ];
 

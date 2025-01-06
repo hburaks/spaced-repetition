@@ -11,6 +11,81 @@
       display: flex;
       gap: 1rem;
     }
+
+    .header-title {
+      .tag-filters {
+        margin-top: 1rem;
+        
+        .selected-tags {
+          margin-bottom: 1rem;
+          
+          mat-chip-listbox {
+            mat-chip-option {
+              margin: 0.25rem 0.5rem 0.25rem 0;
+              padding: 0rem 0.5rem;
+              
+              button {
+                margin-left: 8px;
+              }
+              
+              mat-icon {
+                font-size: 18px;
+                width: 18px;
+                height: 18px;
+              }
+            }
+          }
+        }
+        
+        .tag-search {
+          width: 100%;
+          max-width: 300px;
+          margin-bottom: 1rem;
+
+          .mat-mdc-form-field-subscript-wrapper {
+            display: none;
+          }
+        }
+        
+        .tag-autocomplete {
+          max-height: 200px;
+          overflow-y: auto;
+
+          .tag-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            .popular-indicator {
+              width: 6px;
+              height: 6px;
+              border-radius: 50%;
+              background: #ffd700;
+            }
+          }
+        }
+
+        mat-chip-listbox {
+          mat-chip-option {
+            margin: 0.25rem;
+            cursor: pointer;
+            
+            &:hover {
+              opacity: 0.8;
+            }
+
+            .popular-badge {
+              display: inline-block;
+              width: 6px;
+              height: 6px;
+              border-radius: 50%;
+              background: #ffd700;
+              margin-left: 6px;
+            }
+          }
+        }
+      }
+    }
   }
 
   .cards-section {
@@ -87,6 +162,18 @@
 
         .mat-icon {
           margin-right: 4px;
+        }
+      }
+
+      .card-tags {
+        margin-top: 0.5rem;
+        
+        mat-chip-listbox {
+          mat-chip-option {
+            font-size: 0.85rem;
+            height: 24px;
+            margin: 0 8px 8px 0;
+          }
         }
       }
     }

@@ -29,6 +29,12 @@ export class CardListComponent implements OnInit {
   dueCardsExpanded = false;
   reviewedCardsExpanded = false;
   upcomingCardsExpanded = false;
+  availableTags: string[] = [];
+  selectedTags: string[] = [];
+  popularTags: string[] = [];
+  searchTags: string[] = [];
+  tagSearchQuery: string = '';
+  filteredTags: string[] = [];
 
   constructor(private cardsService: CardsService) {}
 
@@ -39,26 +45,93 @@ export class CardListComponent implements OnInit {
   private loadCards(): void {
     this.cardsService.getCards().subscribe((cards) => {
       this.allCards = cards;
+      this.extractAvailableTags();
       this.categorizeCards();
       cards.forEach((card) => this.showAnswersMap.set(card.id, false));
     });
   }
 
+  private extractAvailableTags(): void {
+    const tagCount = new Map<string, number>();
+    this.allCards.forEach((card) =>
+      card.tags.slice(0, 3).forEach((tag) => {
+        // Limit to first 3 tags
+        tagCount.set(tag, (tagCount.get(tag) || 0) + 1);
+      })
+    );
+
+    // Get top 5 most used tags
+    this.popularTags = Array.from(tagCount.entries())
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5)
+      .map(([tag]) => tag);
+
+    // Rest of the tags for search
+    this.searchTags = Array.from(tagCount.keys())
+      .filter((tag) => !this.popularTags.includes(tag))
+      .sort();
+
+    this.availableTags = [...this.popularTags];
+    this.filteredTags = [...this.availableTags];
+  }
+
+  filterTagsBySearch(query: string): void {
+    this.tagSearchQuery = query;
+    if (!query) {
+      this.filteredTags = Array.from(
+        new Set([...this.popularTags, ...this.searchTags])
+      );
+      return;
+    }
+
+    const searchResults = [...this.popularTags, ...this.searchTags].filter(
+      (tag) =>
+        tag.toLowerCase().includes(query.toLowerCase()) &&
+        !this.selectedTags.includes(tag)
+    );
+    this.filteredTags = searchResults;
+  }
+
+  onTagSelected(event: any): void {
+    if (event.isUserInput && event.source.selected) {
+      this.toggleTag(event.source.value);
+      this.tagSearchQuery = '';
+    }
+  }
+
+  private filterCardsByTags(cards: Card[]): Card[] {
+    if (!this.selectedTags.length) return cards;
+    return cards.filter((card) =>
+      this.selectedTags.every((tag) => card.tags.includes(tag))
+    );
+  }
+
+  toggleTag(tag: string): void {
+    const index = this.selectedTags.indexOf(tag);
+    if (index === -1) {
+      this.selectedTags.push(tag);
+    } else {
+      this.selectedTags.splice(index, 1);
+    }
+    this.categorizeCards();
+  }
+
   private categorizeCards(): void {
     const now = new Date();
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const filteredCards = this.filterCardsByTags(this.allCards);
 
-    this.reviewedCards = this.allCards.filter(
+    this.reviewedCards = filteredCards.filter(
       (card) => card.lastReviewedAt && new Date(card.lastReviewedAt) >= today
     );
 
-    this.dueCards = this.allCards.filter(
+    this.dueCards = filteredCards.filter(
       (card) =>
         new Date(card.nextReviewDate) <= now &&
         (!card.lastReviewedAt || new Date(card.lastReviewedAt) < today)
     );
 
-    this.upcomingCards = this.allCards.filter(
+    this.upcomingCards = filteredCards.filter(
       (card) => new Date(card.nextReviewDate) > now
     );
   }
@@ -101,5 +174,11 @@ export class CardListComponent implements OnInit {
         this.upcomingCardsExpanded = !this.upcomingCardsExpanded;
         break;
     }
+  }
+
+  onTagSearchFocus(): void {
+    this.filteredTags = Array.from(
+      new Set([...this.popularTags, ...this.searchTags])
+    );
   }
 }

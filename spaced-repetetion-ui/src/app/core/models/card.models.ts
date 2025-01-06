@@ -8,11 +8,13 @@ export interface Card {
   createdAt: Date;
   updatedAt: Date;
   lastReviewedAt: Date | null;
+  tags: string[];
 }
 
 export interface CreateCardRequest {
   front: string;
   back: string;
+  tags: string[];
 }
 
 export interface ReviewResult {
