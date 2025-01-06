@@ -57,4 +57,15 @@ export class AuthService {
   isAuthenticated(): boolean {
     return !!localStorage.getItem('token');
   }
+
+  verifyEmail(code: string): Observable<void> {
+    return this.http
+      .post<void>(`${this.apiUrl}/auth/verify-email`, { code })
+      .pipe(
+        catchError(() => {
+          // Mock response
+          return of(void 0);
+        })
+      );
+  }
 }

@@ -1,5 +1,5 @@
 .cards-container {
-  padding: 2rem;
+  padding: 0;
 
   .header {
     display: flex;
@@ -8,18 +8,42 @@
 
     .header-title {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
+      flex-direction: column;
+      gap: 1rem;
       margin-bottom: 1rem;
 
       h1 {
         margin: 0;
       }
+
+      @media (min-width: 768px) {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
     }
 
     &-actions {
       display: flex;
-      gap: 1rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: flex-start;
+
+      button {
+        flex: 0 1 auto;
+        min-width: 140px;
+        max-width: calc(50% - 0.25rem);
+        white-space: nowrap;
+        
+        mat-icon {
+          margin-right: 4px;
+        }
+      }
+
+      @media (min-width: 768px) {
+        justify-content: flex-end;
+        gap: 1rem;
+      }
     }
 
     .tag-filters {
@@ -46,11 +70,15 @@
       
       .tag-search {
         width: 100%;
-        max-width: 300px;
+        max-width: 100%;
         margin-bottom: 1rem;
 
         .mat-mdc-form-field-subscript-wrapper {
           display: none;
+        }
+
+        @media (min-width: 768px) {
+          max-width: 300px;
         }
       }
       
@@ -134,8 +162,12 @@
 
   .cards-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: 1fr;
     gap: 1rem;
+
+    @media (min-width: 576px) {
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
 
     mat-card {
       height: 100%;

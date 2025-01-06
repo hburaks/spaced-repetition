@@ -1,17 +1,26 @@
 <mat-toolbar class="header">
-  <div class="brand">
-    <span class="logo">HB-dev</span>
-    <span class="divider">|</span>
-    <span class="app-name">Spaced Repetition</span>
-  </div>
+  <div class="header-content">
+    <div class="brand">
+      <span class="logo">HB-dev</span>
+      <span class="divider">|</span>
+      <span class="app-name">Spaced Repetition</span>
+    </div>
 
-  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="User menu">
-    <mat-icon>account_circle</mat-icon>
-  </button>
-  <mat-menu #menu="matMenu">
-    <button mat-menu-item (click)="logout()">
-      <mat-icon>exit_to_app</mat-icon>
-      <span>Logout</span>
-    </button>
-  </mat-menu>
+    <div class="auth-buttons">
+      <ng-container *ngIf="!isAuthenticated">
+        <button mat-button routerLink="/auth/login">
+          <mat-icon>login</mat-icon>
+          <span>Login</span>
+        </button>
+        <button mat-button routerLink="/auth/register">
+          <mat-icon>person_add</mat-icon>
+          <span>Register</span>
+        </button>
+        </ng-container>
+        <button mat-button *ngIf="isAuthenticated" (click)="logout()" class="logout-button">
+          <mat-icon>exit_to_app</mat-icon>
+          <span>Logout</span>
+        </button>
+    </div>
+    </div>
 </mat-toolbar>
