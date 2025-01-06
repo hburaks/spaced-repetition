@@ -25,7 +25,7 @@ export class CardListComponent implements OnInit {
   reviewedCards: Card[] = [];
   upcomingCards: Card[] = [];
   showAnswersMap = new Map<string, boolean>();
-  readonly PAGE_SIZE = 12;
+  readonly PAGE_SIZE = 9;
   dueCardsExpanded = false;
   reviewedCardsExpanded = false;
   upcomingCardsExpanded = false;
