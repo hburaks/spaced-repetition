@@ -1,0 +1,75 @@
+.cards-container {
+  padding: 2rem;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+
+    &-actions {
+      display: flex;
+      gap: 1rem;
+    }
+  }
+
+  .cards-section {
+    margin-bottom: 3rem;
+
+    h2 {
+      margin-bottom: 1rem;
+      color: rgba(0, 0, 0, 0.87);
+      
+      .card-count {
+        color: rgba(0, 0, 0, 0.54);
+        font-size: 0.9em;
+      }
+    }
+  }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+
+    mat-card {
+      height: 100%;
+
+      mat-card-content {
+        .card-front {
+          margin-bottom: 1rem;
+        }
+
+        .card-back {
+          max-height: 0;
+          overflow: hidden;
+          opacity: 0;
+          transition: all 0.3s ease-in-out;
+          
+          &.show {
+            max-height: 500px;
+            opacity: 1;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.12);
+          }
+        }
+      }
+
+      mat-card-actions {
+        display: flex;
+        justify-content: flex-end;
+        padding: 8px;
+
+        .mat-icon {
+          margin-right: 4px;
+        }
+      }
+    }
+
+    .reviewed-card {
+      background-color: rgba(76, 175, 80, 0.05);
+      border-left: 4px solid #4CAF50;
+    }
+  }
+} 

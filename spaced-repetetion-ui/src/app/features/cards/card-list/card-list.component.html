@@ -1,0 +1,108 @@
+<div class="cards-container">
+  <div class="header">
+    <h1>My Flashcards</h1>
+    <div class="header-actions">
+      <button mat-raised-button color="accent" routerLink="review">
+        <mat-icon>school</mat-icon>
+        Start Review
+      </button>
+      <button mat-raised-button color="primary" routerLink="create">
+        <mat-icon>add</mat-icon>
+        Create New Card
+      </button>
+    </div>
+  </div>
+
+  <div class="cards-section">
+    <h2>
+      Today's Reviews
+      <span class="card-count">({{reviewedCards.length}} cards)</span>
+    </h2>
+    <div class="cards-grid">
+      <mat-card *ngFor="let card of reviewedCards" class="reviewed-card">
+        <mat-card-header>
+          <mat-card-title>Level: {{card.level}}</mat-card-title>
+          <mat-card-subtitle>Reviewed: {{card.lastReviewedAt | date:'shortTime'}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="card-front">
+            <p><strong>Question:</strong></p>
+            <p>{{card.front}}</p>
+          </div>
+          <div class="card-back" [class.show]="isAnswerVisible(card.id)">
+            <p><strong>Answer:</strong></p>
+            <p>{{card.back}}</p>
+          </div>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button (click)="toggleAnswer(card.id)">
+            <mat-icon>{{ isAnswerVisible(card.id) ? 'visibility_off' : 'visibility' }}</mat-icon>
+            {{ isAnswerVisible(card.id) ? 'Hide Answer' : 'Show Answer' }}
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+
+  <div class="cards-section">
+    <h2>
+      Due for Review
+      <span class="card-count">({{dueCards.length}} cards)</span>
+    </h2>
+    <div class="cards-grid">
+      <mat-card *ngFor="let card of dueCards">
+        <mat-card-header>
+          <mat-card-title>Level: {{card.level}}</mat-card-title>
+          <mat-card-subtitle>Due: {{card.nextReviewDate | date}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="card-front">
+            <p><strong>Question:</strong></p>
+            <p>{{card.front}}</p>
+          </div>
+          <div class="card-back" [class.show]="isAnswerVisible(card.id)">
+            <p><strong>Answer:</strong></p>
+            <p>{{card.back}}</p>
+          </div>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button (click)="toggleAnswer(card.id)">
+            <mat-icon>{{ isAnswerVisible(card.id) ? 'visibility_off' : 'visibility' }}</mat-icon>
+            {{ isAnswerVisible(card.id) ? 'Hide Answer' : 'Show Answer' }}
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+
+  <div class="cards-section">
+    <h2>
+      Upcoming Reviews
+      <span class="card-count">({{upcomingCards.length}} cards)</span>
+    </h2>
+    <div class="cards-grid">
+      <mat-card *ngFor="let card of upcomingCards">
+        <mat-card-header>
+          <mat-card-title>Level: {{card.level}}</mat-card-title>
+          <mat-card-subtitle>Next review: {{card.nextReviewDate | date}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="card-front">
+            <p><strong>Question:</strong></p>
+            <p>{{card.front}}</p>
+          </div>
+          <div class="card-back" [class.show]="isAnswerVisible(card.id)">
+            <p><strong>Answer:</strong></p>
+            <p>{{card.back}}</p>
+          </div>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button (click)="toggleAnswer(card.id)">
+            <mat-icon>{{ isAnswerVisible(card.id) ? 'visibility_off' : 'visibility' }}</mat-icon>
+            {{ isAnswerVisible(card.id) ? 'Hide Answer' : 'Show Answer' }}
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</div>

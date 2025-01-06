@@ -1,1 +1,72 @@
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$custom-primary: mat.define-palette(mat.$grey-palette, 800);
+$custom-accent: mat.define-palette(mat.$blue-palette, 600);
+$custom-warn: mat.define-palette(mat.$red-palette, 500);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$spaced-repetetion-ui-theme: mat.define-light-theme((
+  color: (
+    primary: $custom-primary,
+    accent: $custom-accent,
+    warn: $custom-warn,
+  )
+));
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($spaced-repetetion-ui-theme);
+
 /* You can add global styles to this file, and also import other style files */
+
+html, body { 
+  height: 100%; 
+  margin: 0;
+}
+
+body { 
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background: #f5f5f5;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+// Add some global card styles
+mat-card {
+  border-radius: 8px !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
+  transition: transform 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+  }
+}
+
+// Add some global typography styles
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-weight: 500;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+}

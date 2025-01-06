@@ -1,0 +1,47 @@
+<div class="review-container">
+  <div class="header">
+    <h1>Review Cards</h1>
+    <button mat-raised-button routerLink="/cards">Back to Cards</button>
+  </div>
+
+  <ng-container *ngIf="!isLoading; else loading">
+    <ng-container *ngIf="currentCard; else noCards">
+      <div class="card-container">
+        <div class="card" [class.flipped]="showAnswer">
+          <div class="card-face front">
+            <h2>Question</h2>
+            <p>{{currentCard.front}}</p>
+            <button mat-raised-button color="primary" (click)="showAnswer = true">Show Answer</button>
+          </div>
+          <div class="card-face back">
+            <h2>Answer</h2>
+            <p>{{currentCard.back}}</p>
+            <div class="actions">
+              <button mat-raised-button color="warn" (click)="submitReview(false)">
+                <mat-icon>close</mat-icon> Incorrect
+              </button>
+              <button mat-raised-button color="primary" (click)="submitReview(true)">
+                <mat-icon>check</mat-icon> Correct
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </ng-container>
+
+  <ng-template #noCards>
+    <div class="empty-state">
+      <h2>No cards to review!</h2>
+      <p>All caught up for now. Check back later for more reviews.</p>
+      <button mat-raised-button color="primary" routerLink="/cards">Back to Cards</button>
+    </div>
+  </ng-template>
+
+  <ng-template #loading>
+    <div class="loading">
+      <mat-spinner></mat-spinner>
+      <p>Loading cards...</p>
+    </div>
+  </ng-template>
+</div>

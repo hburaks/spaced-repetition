@@ -1,0 +1,25 @@
+<div class="mat-card">
+  <div class="mat-card-header">
+    <div class="mat-card-title">Create New Flashcard</div>
+  </div>
+  <div class="mat-card-content">
+    <form [formGroup]="cardForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline">
+        <mat-label>Front</mat-label>
+        <textarea matInput formControlName="front" rows="3"></textarea>
+        <mat-error *ngIf="cardForm.get('front')?.errors?.['required']">Front content is required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Back</mat-label>
+        <textarea matInput formControlName="back" rows="3"></textarea>
+        <mat-error *ngIf="cardForm.get('back')?.errors?.['required']">Back content is required</mat-error>
+      </mat-form-field>
+
+      <div class="actions">
+        <button mat-button routerLink="/cards">Cancel</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!cardForm.valid">Create</button>
+      </div>
+    </form>
+  </div>
+</div>

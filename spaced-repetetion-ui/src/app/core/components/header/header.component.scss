@@ -1,0 +1,41 @@
+.header {
+  background: white;
+  color: #2c3e50;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+  height: 64px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .logo {
+      font-size: 1.25rem;
+      font-weight: 900;
+      padding: 0.5rem 0.75rem;
+      border-radius: 4px;
+      background:  white;
+      color: #2c3e50;
+      letter-spacing: 1px;
+
+    }
+
+    .divider {
+      color: #e0e0e0;
+    }
+
+    .app-name {
+      font-weight: 400;
+      color: #2c3e50;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  button {
+    color: #2c3e50;
+  }
+} 
