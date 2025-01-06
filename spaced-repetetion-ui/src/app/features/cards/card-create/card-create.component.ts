@@ -25,6 +25,7 @@ export class CardCreateComponent implements OnInit {
   selectedTags: string[] = [];
   allTags: string[] = [];
   filteredTags: Observable<string[]>;
+  isPreviewVisible = true;
 
   constructor(
     private fb: FormBuilder,
@@ -62,11 +63,26 @@ export class CardCreateComponent implements OnInit {
 
   addTag(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
+
     if (value) {
-      this.selectedTags.push(value);
-      event.chipInput!.clear();
-      this.tagCtrl.setValue(null);
+      // Check if tag already exists
+      if (!this.selectedTags.includes(value)) {
+        this.selectedTags.push(value);
+
+        // Add to allTags if it's a new tag
+        if (!this.allTags.includes(value)) {
+          this.allTags.push(value);
+          this.allTags.sort();
+        }
+      }
     }
+
+    // Clear the input value but don't blur
+    event.chipInput!.clear();
+    this.tagCtrl.setValue(null);
+
+    // Keep focus on the input
+    event.chipInput!.inputElement.focus();
   }
 
   removeTag(tag: string): void {
@@ -77,8 +93,20 @@ export class CardCreateComponent implements OnInit {
   }
 
   selectedTag(event: MatAutocompleteSelectedEvent): void {
-    this.selectedTags.push(event.option.viewValue);
+    if (!this.selectedTags.includes(event.option.viewValue)) {
+      this.selectedTags.push(event.option.viewValue);
+    }
+
+    // Clear the input value
     this.tagCtrl.setValue(null);
+
+    // Keep focus on the input
+    const input = document.querySelector(
+      '.tag-input input'
+    ) as HTMLInputElement;
+    if (input) {
+      input.focus();
+    }
   }
 
   onSubmit(): void {
@@ -92,5 +120,9 @@ export class CardCreateComponent implements OnInit {
         this.router.navigate(['..']);
       });
     }
+  }
+
+  togglePreview(): void {
+    this.isPreviewVisible = !this.isPreviewVisible;
   }
 }
