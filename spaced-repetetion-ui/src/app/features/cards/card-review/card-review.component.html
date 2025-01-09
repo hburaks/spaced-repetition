@@ -1,7 +1,12 @@
 <div class="review-container">
   <div class="header">
-    <h1>Review Cards</h1>
-    <button mat-raised-button routerLink="/cards">Back to Cards</button>
+    <div class="header-content">
+      <h1>Review Cards</h1>
+      <button mat-raised-button routerLink="/cards">
+        <mat-icon>arrow_back</mat-icon>
+        Back to Cards
+      </button>
+      </div>
   </div>
 
   <ng-container *ngIf="!isLoading; else loading">
@@ -17,10 +22,10 @@
             <h2>Answer</h2>
             <p>{{currentCard.back}}</p>
             <div class="actions">
-              <button mat-raised-button color="warn" (click)="submitReview(false)">
+              <button mat-raised-button color="warn" class="incorrect-button" (click)="submitReview(false)">
                 <mat-icon>close</mat-icon> Incorrect
               </button>
-              <button mat-raised-button color="primary" (click)="submitReview(true)">
+              <button mat-raised-button color="primary" class="correct-button" (click)="submitReview(true)">
                 <mat-icon>check</mat-icon> Correct
               </button>
             </div>
