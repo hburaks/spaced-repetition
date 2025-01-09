@@ -1,0 +1,58 @@
+<div class="settings-container">
+  <div class="header">
+    <button mat-icon-button (click)="goBack()" class="back-button">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1>Profile Settings</h1>
+  </div>
+
+  <div class="loading-overlay" *ngIf="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <mat-card>
+    <mat-card-content>
+      <form [formGroup]="profileForm" (ngSubmit)="saveProfileSettings()">
+        <mat-form-field appearance="outline">
+          <mat-label>Full Name</mat-label>
+          <input matInput formControlName="fullName">
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit">
+          Save Profile
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Change Password</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="passwordForm" (ngSubmit)="changePassword()">
+        <mat-form-field appearance="outline">
+          <mat-label>Current Password</mat-label>
+          <input matInput type="password" formControlName="currentPassword">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>New Password</mat-label>
+          <input matInput type="password" formControlName="newPassword">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Confirm New Password</mat-label>
+          <input matInput type="password" formControlName="confirmPassword">
+          <mat-error *ngIf="passwordForm.hasError('mismatch')">
+            Passwords do not match
+          </mat-error>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit">
+          Change Password
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

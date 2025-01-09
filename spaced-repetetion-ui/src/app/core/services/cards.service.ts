@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Observable, of, throwError } from 'rxjs';
+import { catchError, throwIfEmpty, map } from 'rxjs/operators';
 import { Card, CreateCardRequest, ReviewResult } from '../models/card.models';
+import { environment } from '../../../environments/environment';
+import { ErrorService } from './error.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CardsService {
-  private apiUrl = 'http://localhost:3000/api';
+  private apiUrl = environment.apiUrl;
   private mockCards: Card[] = [
     {
       id: '1',
@@ -304,39 +306,76 @@ export class CardsService {
     })),
   ];
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private errorService: ErrorService) {}
 
   getCards(): Observable<Card[]> {
     return this.http.get<Card[]>(`${this.apiUrl}/cards`).pipe(
-      catchError(() => {
-        // Sort cards by nextReviewDate
-        return of(
-          this.mockCards.sort(
-            (a, b) =>
-              new Date(a.nextReviewDate).getTime() -
-              new Date(b.nextReviewDate).getTime()
-          )
-        );
+      map((cards) =>
+        cards.map((card) => ({
+          ...card,
+          reviewedTodayIncorrectly: this.isReviewedTodayAndDueToday(card),
+          reviewedTodayCorrectly: this.isReviewedTodayCorrectly(card),
+        }))
+      ),
+      catchError((error) => {
+        this.errorService.showError();
+        return throwError(() => error);
       })
     );
   }
 
+  private isReviewedTodayAndDueToday(card: Card): boolean {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const reviewDate = card.lastReviewedAt
+      ? new Date(card.lastReviewedAt)
+      : null;
+    const nextReviewDate = new Date(card.nextReviewDate);
+
+    if (reviewDate) reviewDate.setHours(0, 0, 0, 0);
+    nextReviewDate.setHours(0, 0, 0, 0);
+
+    // If reviewed today and still due today, it was an incorrect review
+    return (
+      reviewDate?.getTime() === today.getTime() &&
+      nextReviewDate.getTime() === today.getTime()
+    );
+  }
+
+  private isReviewedTodayCorrectly(card: Card): boolean {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const reviewDate = card.lastReviewedAt
+      ? new Date(card.lastReviewedAt)
+      : null;
+    const nextReviewDate = new Date(card.nextReviewDate);
+
+    if (reviewDate) reviewDate.setHours(0, 0, 0, 0);
+    nextReviewDate.setHours(0, 0, 0, 0);
+
+    // If reviewed today and next review is in the future, it was a correct review
+    return (
+      reviewDate?.getTime() === today.getTime() &&
+      nextReviewDate.getTime() > today.getTime()
+    );
+  }
+
   getCardsForReview(): Observable<Card[]> {
-    return this.http
-      .get<Card[]>(`${this.apiUrl}/cards/review`)
-      .pipe(catchError(() => of(this.mockCards)));
+    return this.http.get<Card[]>(`${this.apiUrl}/cards/review`).pipe(
+      catchError((error) => {
+        this.errorService.showError();
+        return throwError(() => error);
+      })
+    );
   }
 
   createCard(card: CreateCardRequest): Observable<Card> {
     return this.http.post<Card>(`${this.apiUrl}/cards`, card).pipe(
-      catchError(() => {
-        const newCard: Card = {
-          ...this.mockCards[0],
-          id: (Math.random() * 1000).toString(),
-          front: card.front,
-          back: card.back,
-        };
-        return of(newCard);
+      catchError((error) => {
+        this.errorService.showError();
+        return throwError(() => error);
       })
     );
   }
@@ -354,20 +393,22 @@ export class CardsService {
   }
 
   submitReview(review: ReviewResult): Observable<Card> {
+    console.log('calling submitReview', review);
     return this.http
       .post<Card>(`${this.apiUrl}/cards/${review.cardId}/review`, review)
       .pipe(
-        catchError(() => {
-          const card = { ...this.mockCards[0] };
-          // Update level based on success/failure
-          card.level = review.success ? card.level + 1 : 0;
-          card.nextReviewDate = this.calculateNextReview(
-            card.level,
-            review.success
-          );
-          card.lastReviewedAt = new Date();
-          return of(card);
+        catchError((error) => {
+          this.errorService.showError();
+          return throwError(() => error);
         })
       );
+  }
+
+  deleteCard(cardId: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/cards/${cardId}`);
+  }
+
+  updateCard(cardId: string, card: CreateCardRequest): Observable<Card> {
+    return this.http.put<Card>(`${this.apiUrl}/cards/${cardId}`, card);
   }
 }

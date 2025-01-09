@@ -46,9 +46,9 @@ export class CardCreateComponent implements OnInit {
   ngOnInit(): void {
     // Get all existing tags from the service
     this.cardsService.getCards().subscribe((cards) => {
-      const tagSet = new Set<string>();
-      cards.forEach((card) => card.tags.forEach((tag) => tagSet.add(tag)));
-      this.allTags = Array.from(tagSet).sort();
+      const tagSet: string[] = [];
+      cards.forEach((card) => card.tags.forEach((tag) => tagSet.push(tag)));
+      this.allTags = tagSet.sort();
     });
   }
 

@@ -50,11 +50,12 @@
 
   <div class="cards-section">
     <h2>
-      Today's Reviews
+      Reviewed Today
       <span class="card-count">({{reviewedCards.length}} cards)</span>
     </h2>
     <div class="cards-grid" [@cardList]="reviewedCardsExpanded">
-      <mat-card *ngFor="let card of visibleReviewedCards" class="reviewed-card">
+      <mat-card *ngFor="let card of visibleReviewedCards" class="reviewed-card"
+        [class.reviewed-correctly]="card.reviewedTodayCorrectly" [class.reviewed-incorrectly]="card.reviewedTodayIncorrectly">
         <mat-card-header>
           <mat-card-title>Level: {{card.level}}</mat-card-title>
           <mat-card-subtitle>Reviewed: {{card.lastReviewedAt | date:'shortTime'}}</mat-card-subtitle>
@@ -81,6 +82,14 @@
             <mat-icon>{{ isAnswerVisible(card.id) ? 'visibility_off' : 'visibility' }}</mat-icon>
             {{ isAnswerVisible(card.id) ? 'Hide Answer' : 'Show Answer' }}
           </button>
+          <div class="action-buttons">
+            <button mat-icon-button (click)="editCard(card)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="deleteCard(card)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
         </mat-card-actions>
       </mat-card>
     </div>
@@ -98,7 +107,8 @@
       <span class="card-count">({{dueCards.length}} cards)</span>
     </h2>
     <div class="cards-grid" [@cardList]="dueCardsExpanded">
-      <mat-card *ngFor="let card of visibleDueCards">
+      <mat-card *ngFor="let card of visibleDueCards" [class.reviewed-incorrectly]="card.reviewedTodayIncorrectly"
+        [class.reviewed-card]="card.reviewedTodayIncorrectly">
         <mat-card-header>
           <mat-card-title>Level: {{card.level}}</mat-card-title>
           <mat-card-subtitle>Due: {{card.nextReviewDate | date}}</mat-card-subtitle>
@@ -125,6 +135,14 @@
             <mat-icon>{{ isAnswerVisible(card.id) ? 'visibility_off' : 'visibility' }}</mat-icon>
             {{ isAnswerVisible(card.id) ? 'Hide Answer' : 'Show Answer' }}
           </button>
+          <div class="action-buttons">
+            <button mat-icon-button (click)="editCard(card)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="deleteCard(card)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
         </mat-card-actions>
       </mat-card>
     </div>
@@ -169,6 +187,14 @@
             <mat-icon>{{ isAnswerVisible(card.id) ? 'visibility_off' : 'visibility' }}</mat-icon>
             {{ isAnswerVisible(card.id) ? 'Hide Answer' : 'Show Answer' }}
           </button>
+          <div class="action-buttons">
+            <button mat-icon-button (click)="editCard(card)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="deleteCard(card)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
         </mat-card-actions>
       </mat-card>
     </div>

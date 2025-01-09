@@ -1,51 +1,64 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Observable, tap, catchError, throwError } from 'rxjs';
 import {
   AuthResponse,
   LoginRequest,
   RegisterRequest,
-  User,
 } from '../models/auth.models';
+import { environment } from '../../../environments/environment';
+import { ErrorService } from './error.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:3000/api'; // Change this when backend is ready
-  private mockUser: User = {
-    id: '1',
-    email: 'test@example.com',
-    username: 'testuser',
-  };
+  private apiUrl = `${environment.apiUrl}/auth`;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private errorService: ErrorService
+  ) {}
 
-  login(credentials: LoginRequest): Observable<AuthResponse> {
+  register(request: RegisterRequest): Observable<AuthResponse> {
     return this.http
-      .post<AuthResponse>(`${this.apiUrl}/auth/login`, credentials)
+      .post<AuthResponse>(`${this.apiUrl}/register`, request)
       .pipe(
-        catchError(() => {
-          // Mock response
-          return of({
-            token: 'mock-jwt-token',
-            user: this.mockUser,
-          });
+        catchError((error) => {
+          this.errorService.showError();
+          return throwError(() => error);
         })
       );
   }
 
-  register(userData: RegisterRequest): Observable<AuthResponse> {
+  login(request: LoginRequest): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, request).pipe(
+      tap((response) => {
+        if (response.token) {
+          localStorage.setItem('token', response.token);
+        }
+      }),
+      catchError((error) => {
+        this.errorService.showError();
+        return throwError(() => error);
+      })
+    );
+  }
+
+  verifyEmail(code: string): Observable<AuthResponse> {
     return this.http
-      .post<AuthResponse>(`${this.apiUrl}/auth/register`, userData)
+      .post<AuthResponse>(`${this.apiUrl}/verify-email`, { code })
       .pipe(
-        catchError(() => {
-          // Mock response
-          return of({
-            token: 'mock-jwt-token',
-            user: this.mockUser,
-          });
+        tap((response) => {
+          if (response.token) {
+            localStorage.setItem('token', response.token);
+          }
+        }),
+        catchError((error) => {
+          this.errorService.showError();
+          return throwError(() => error);
         })
       );
   }
@@ -54,18 +67,11 @@ export class AuthService {
     localStorage.removeItem('token');
   }
 
-  isAuthenticated(): boolean {
+  isLoggedIn(): boolean {
     return !!localStorage.getItem('token');
   }
 
-  verifyEmail(code: string): Observable<void> {
-    return this.http
-      .post<void>(`${this.apiUrl}/auth/verify-email`, { code })
-      .pipe(
-        catchError(() => {
-          // Mock response
-          return of(void 0);
-        })
-      );
+  getToken(): string | null {
+    return localStorage.getItem('token');
   }
 }

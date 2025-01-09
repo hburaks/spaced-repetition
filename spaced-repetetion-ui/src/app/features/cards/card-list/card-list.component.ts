@@ -8,6 +8,10 @@ import {
   transition,
   animate,
 } from '@angular/animations';
+import { MatDialog } from '@angular/material/dialog';
+import { CardEditDialogComponent, ConfirmDialogComponent } from '..';
+import { TagService } from '../../../core/services/tag.service';
+import { ErrorService } from 'src/app/core/services/error.service';
 
 @Component({
   selector: 'app-card-list',
@@ -36,9 +40,15 @@ export class CardListComponent implements OnInit {
   tagSearchQuery: string = '';
   filteredTags: string[] = [];
 
-  constructor(private cardsService: CardsService) {}
+  constructor(
+    private cardsService: CardsService,
+    private dialog: MatDialog,
+    private tagService: TagService,
+    private errorService: ErrorService
+  ) {}
 
   ngOnInit(): void {
+    this.loadTags();
     this.loadCards();
   }
 
@@ -46,8 +56,20 @@ export class CardListComponent implements OnInit {
     this.cardsService.getCards().subscribe((cards) => {
       this.allCards = cards;
       this.extractAvailableTags();
-      this.categorizeCards();
+      this.categorizeCards(cards);
       cards.forEach((card) => this.showAnswersMap.set(card.id, false));
+    });
+  }
+
+  private loadTags() {
+    this.tagService.getUserTags().subscribe({
+      next: (tags) => {
+        this.availableTags = tags;
+      },
+      error: (error) => {
+        console.error('Error loading tags:', error);
+        this.errorService.showError();
+      },
     });
   }
 
@@ -113,27 +135,43 @@ export class CardListComponent implements OnInit {
     } else {
       this.selectedTags.splice(index, 1);
     }
-    this.categorizeCards();
+    this.categorizeCards(this.allCards);
   }
 
-  private categorizeCards(): void {
-    const now = new Date();
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const filteredCards = this.filterCardsByTags(this.allCards);
+  private categorizeCards(cards: Card[]): void {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-    this.reviewedCards = filteredCards.filter(
-      (card) => card.lastReviewedAt && new Date(card.lastReviewedAt) >= today
-    );
+    this.reviewedCards = cards.filter((card) => {
+      const reviewDate = card.lastReviewedAt
+        ? new Date(card.lastReviewedAt)
+        : null;
+      if (reviewDate) {
+        reviewDate.setHours(0, 0, 0, 0);
+        return (
+          reviewDate.getTime() === today.getTime() &&
+          !card.reviewedTodayIncorrectly
+        );
+      }
+      return false;
+    });
 
-    this.dueCards = filteredCards.filter(
-      (card) =>
-        new Date(card.nextReviewDate) <= now &&
-        (!card.lastReviewedAt || new Date(card.lastReviewedAt) < today)
-    );
+    this.dueCards = cards.filter((card) => {
+      const nextReview = new Date(card.nextReviewDate);
+      nextReview.setHours(0, 0, 0, 0);
+      // Include cards that are due today OR were reviewed incorrectly today
+      return (
+        nextReview.getTime() <= today.getTime() || card.reviewedTodayIncorrectly
+      );
+    });
 
-    this.upcomingCards = filteredCards.filter(
-      (card) => new Date(card.nextReviewDate) > now
-    );
+    this.upcomingCards = cards.filter((card) => {
+      const nextReview = new Date(card.nextReviewDate);
+      nextReview.setHours(0, 0, 0, 0);
+      return (
+        nextReview.getTime() > today.getTime() && !card.reviewedTodayIncorrectly
+      );
+    });
   }
 
   toggleAnswer(cardId: string): void {
@@ -180,5 +218,40 @@ export class CardListComponent implements OnInit {
     this.filteredTags = Array.from(
       new Set([...this.popularTags, ...this.searchTags])
     );
+  }
+
+  editCard(card: Card): void {
+    const dialogRef = this.dialog.open(CardEditDialogComponent, {
+      width: '90vw',
+      maxWidth: '600px',
+      data: { ...card },
+      panelClass: 'responsive-dialog',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.cardsService.updateCard(card.id, result).subscribe(() => {
+          this.loadCards();
+        });
+      }
+    });
+  }
+
+  deleteCard(card: Card): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '300px',
+      data: {
+        title: 'Delete Card',
+        message: 'Are you sure you want to delete this card?',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.cardsService.deleteCard(card.id).subscribe(() => {
+          this.loadCards();
+        });
+      }
+    });
   }
 }

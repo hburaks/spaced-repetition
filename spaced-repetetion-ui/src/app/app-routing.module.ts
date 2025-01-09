@@ -19,6 +19,14 @@ const routes: Routes = [
       import('./features/cards/cards.module').then((m) => m.CardsModule),
     canActivate: [AuthGuard],
   },
+  {
+    path: 'settings',
+    loadChildren: () =>
+      import('./features/settings/settings.module').then(
+        (m) => m.SettingsModule
+      ),
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({

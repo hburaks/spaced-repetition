@@ -38,7 +38,10 @@ export class CardReviewComponent implements OnInit {
   }
 
   submitReview(success: boolean): void {
+    console.log('submitReview', success, this.currentCard?.id);
     if (this.currentCard) {
+      console.log('submitReview', success, this.currentCard?.id);
+
       this.cardsService
         .submitReview({ cardId: this.currentCard.id, success })
         .subscribe({

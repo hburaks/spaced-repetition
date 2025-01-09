@@ -11,9 +11,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatDialogModule } from '@angular/material/dialog';
 import { CardReviewComponent } from './card-review/card-review.component';
 import { CardCreateComponent } from './card-create/card-create.component';
 import { CardListComponent } from './card-list/card-list.component';
+import { CardEditDialogComponent } from './card-edit-dialog/card-edit-dialog.component';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
 const routes: Routes = [
   { path: '', component: CardListComponent },
@@ -22,7 +25,13 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [CardListComponent, CardReviewComponent, CardCreateComponent],
+  declarations: [
+    CardListComponent,
+    CardReviewComponent,
+    CardCreateComponent,
+    CardEditDialogComponent,
+    ConfirmDialogComponent,
+  ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -35,6 +44,7 @@ const routes: Routes = [
     MatProgressSpinnerModule,
     MatChipsModule,
     MatAutocompleteModule,
+    MatDialogModule,
     RouterModule.forChild(routes),
   ],
 })

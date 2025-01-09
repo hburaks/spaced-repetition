@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title>Email Verification</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+
+    .email-container {
+      background-color: white;
+      border-radius: 8px;
+      padding: 30px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .logo img {
+      width: 150px;
+      height: auto;
+    }
+
+    .verification-code {
+      background-color: #f8f9fa;
+      border-radius: 4px;
+      padding: 15px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      color: #2196F3;
+      margin: 20px 0;
+      letter-spacing: 2px;
+    }
+
+    .greeting {
+      font-size: 18px;
+      color: #1976D2;
+      margin-bottom: 20px;
+    }
+
+    .footer {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+      font-size: 12px;
+      color: #666;
+      text-align: center;
+    }
+
+    .info {
+      background-color: #E3F2FD;
+      padding: 15px;
+      border-radius: 4px;
+      margin: 20px 0;
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .logo-text {
+      font-size: 1.25rem;
+      font-weight: 900;
+      padding: 0.5rem 0.75rem;
+      border-radius: 4px;
+      background: white;
+      color: #2c3e50;
+      letter-spacing: 1px;
+      display: inline-block;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="email-container">
+    <div class="logo">
+      <div class="logo-text">HB-dev</div>
+    </div>
+
+    <div class="greeting">
+      Hello <span th:text="${fullName}">User</span>! 👋
+    </div>
+
+    <p>Welcome to Spaced Repetition, your new learning companion! We're excited to have you on board.</p>
+
+    <div class="verification-code">
+      <span th:text="${verificationCode}">123456</span>
+    </div>
+
+    <div class="info">
+      <strong>Please use this code to verify your email address.</strong><br>
+      This code will expire in 24 hours.
+    </div>
+
+    <p>With Spaced Repetition, you'll be able to:</p>
+    <ul>
+      <li>Create personalized flashcards</li>
+      <li>Learn efficiently with our spaced repetition algorithm</li>
+      <li>Track your progress over time</li>
+    </ul>
+
+    <div class="footer">
+      <p>This is an automated message, please do not reply.</p>
+      <p>© 2024 Spaced Repetition. All rights reserved.</p>
+    </div>
+  </div>
+</body>
+
+</html>

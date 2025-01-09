@@ -10,8 +10,8 @@ import { AuthService } from '../../services/auth.service';
 export class HeaderComponent {
   constructor(private authService: AuthService, private router: Router) {}
 
-  get isAuthenticated(): boolean {
-    return this.authService.isAuthenticated();
+  isLoggedIn(): boolean {
+    return this.authService.isLoggedIn();
   }
 
   logout(): void {

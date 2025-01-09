@@ -9,6 +9,8 @@ export interface Card {
   updatedAt: Date;
   lastReviewedAt: Date | null;
   tags: string[];
+  reviewedTodayIncorrectly?: boolean;
+  reviewedTodayCorrectly?: boolean;
 }
 
 export interface CreateCardRequest {

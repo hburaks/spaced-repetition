@@ -66,6 +66,7 @@ A modern flashcard application using spaced repetition techniques for efficient 
 - [ ] Create theme documentation
 - [ ] Add e2e tests
 - [ ] Create user migration plan
+- [ ] Add notifications for review reminders
 
 ## Algorithm
 

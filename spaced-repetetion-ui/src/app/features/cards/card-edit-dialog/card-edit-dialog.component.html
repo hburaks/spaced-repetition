@@ -1,0 +1,42 @@
+<div class="edit-dialog">
+  <h2 class="dialog-title" mat-dialog-title>Edit Card</h2>
+  <mat-dialog-content>
+    <form [formGroup]="cardForm">
+      <mat-form-field appearance="outline" style="margin-top: 0.5rem;">
+        <mat-label>Front (Question)</mat-label>
+        <textarea matInput formControlName="front" rows="3"></textarea>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Back (Answer)</mat-label>
+        <textarea matInput formControlName="back" rows="3"></textarea>
+      </mat-form-field>
+
+      <div class="tag-section">
+        <div class="tag-chips">
+          <mat-chip-option *ngFor="let tag of selectedTags" [removable]="true" (removed)="removeTag(tag)">
+            {{tag}}
+            <mat-icon matChipRemove>cancel</mat-icon>
+          </mat-chip-option>
+        </div>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Add Tags</mat-label>
+          <input matInput [matAutocomplete]="auto" [formControl]="tagInput" placeholder="Type to add tags...">
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="addTag($event)">
+            <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
+              {{tag}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions class="actions">
+    <button mat-button (click)="onCancel()">Cancel</button>
+    <button mat-raised-button color="primary" (click)="onSave()" [disabled]="!cardForm.valid">
+      Save
+    </button>
+  </mat-dialog-actions>
+</div>
