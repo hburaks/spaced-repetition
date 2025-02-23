@@ -68,7 +68,7 @@ export class CardListComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error loading tags:', error);
-        this.errorService.showError();
+        this.errorService.showError(error);
       },
     });
   }

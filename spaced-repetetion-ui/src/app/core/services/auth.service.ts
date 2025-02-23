@@ -27,7 +27,7 @@ export class AuthService {
       .post<AuthResponse>(`${this.apiUrl}/register`, request)
       .pipe(
         catchError((error) => {
-          this.errorService.showError();
+          this.errorService.showError(error);
           return throwError(() => error);
         })
       );
@@ -41,7 +41,7 @@ export class AuthService {
         }
       }),
       catchError((error) => {
-        this.errorService.showError();
+        this.errorService.showError(error);
         return throwError(() => error);
       })
     );
@@ -57,7 +57,7 @@ export class AuthService {
           }
         }),
         catchError((error) => {
-          this.errorService.showError();
+          this.errorService.showError(error);
           return throwError(() => error);
         })
       );

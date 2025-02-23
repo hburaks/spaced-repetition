@@ -15,16 +15,15 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import com.hburak_dev.spaced_repetition_be.config.properties.CorsProperties;
+
 import java.util.Arrays;
-import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
 public class BeansConfig {
 
-    @Value("${cors.allowed-origins:*}")
-    private List<String> allowedOrigin;
-
+    private final CorsProperties corsProperties;
     private final UserDetailsService userDetailsService;
 
     @Bean
@@ -46,15 +45,14 @@ public class BeansConfig {
     }
 
     @Bean
-    public org.springframework.web.filter.CorsFilter corsFilter() {
+    public CorsFilter corsFilter() {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         final CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(allowedOrigin);
-        config.setAllowedHeaders(Arrays.asList("*"));
-        config.setAllowedMethods(Arrays.asList("*"));
+        config.setAllowedOriginPatterns(corsProperties.getAllowedOriginPatterns());
+        config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
-
     }
 }

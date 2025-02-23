@@ -38,4 +38,6 @@ logging:
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 
 cors:
-  allowed-origins: http://localhost:4200
+  allowed-origin-patterns:
+    - http://localhost:4200
+    - https://spaced-repetition-65wojry65-hburaks-projects.vercel.app
