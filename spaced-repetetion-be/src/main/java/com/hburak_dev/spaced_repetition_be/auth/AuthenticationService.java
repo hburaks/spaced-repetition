@@ -5,13 +5,16 @@ import com.hburak_dev.spaced_repetition_be.auth.dto.UserDto;
 import com.hburak_dev.spaced_repetition_be.user.User;
 import com.hburak_dev.spaced_repetition_be.user.UserRepository;
 import com.hburak_dev.spaced_repetition_be.email.EmailService;
+import com.hburak_dev.spaced_repetition_be.exception.AuthenticationException;
 import com.hburak_dev.spaced_repetition_be.security.JwtService;
 import com.hburak_dev.spaced_repetition_be.user.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
+import com.hburak_dev.spaced_repetition_be.exception.BusinessException;
 
 import java.util.Random;
 
@@ -69,17 +72,24 @@ public class AuthenticationService {
   }
 
   public AuthResponse login(String email, String password) {
-    authenticationManager.authenticate(
-        new UsernamePasswordAuthenticationToken(email, password));
-    var user = userRepository.findByEmail(email)
-        .orElseThrow(() -> new RuntimeException("User not found"));
+    try {
+      authenticationManager.authenticate(
+          new UsernamePasswordAuthenticationToken(email, password));
 
-    if (!user.isEnabled()) {
-      throw new RuntimeException("Email not verified");
-    }
+      var user = userRepository.findByEmail(email)
+            .orElseThrow(() -> new AuthenticationException("User not found"));
 
-    var token = jwtService.generateToken(user);
-    return createAuthResponse(token, user);
+        if (!user.isEnabled()) {
+          throw new AuthenticationException("Please verify your email first");
+        }
+
+        var token = jwtService.generateToken(user);
+        return createAuthResponse(token, user);
+      } catch (BadCredentialsException e) {
+        throw new AuthenticationException("Invalid email or password");
+      } catch (Exception e) {
+        throw new AuthenticationException("Authentication failed: " + e.getMessage());
+      }
   }
 
   public AuthResponse verifyEmail(String code) {

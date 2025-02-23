@@ -16,7 +16,7 @@ export class TagService {
   getUserTags(): Observable<string[]> {
     return this.http.get<string[]>(this.apiUrl).pipe(
       catchError((error) => {
-        this.errorService.showError();
+        this.errorService.showError(error);
         return throwError(() => error);
       })
     );

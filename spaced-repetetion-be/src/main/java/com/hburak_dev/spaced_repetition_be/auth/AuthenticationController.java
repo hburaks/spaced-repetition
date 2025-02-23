@@ -4,7 +4,9 @@ import com.hburak_dev.spaced_repetition_be.auth.dto.AuthResponse;
 import com.hburak_dev.spaced_repetition_be.auth.dto.LoginRequest;
 import com.hburak_dev.spaced_repetition_be.auth.dto.RegisterRequest;
 import com.hburak_dev.spaced_repetition_be.auth.dto.VerifyEmailRequest;
+import com.hburak_dev.spaced_repetition_be.exception.AuthenticationException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,5 +34,12 @@ public class AuthenticationController {
   @PostMapping("/verify-email")
   public ResponseEntity<AuthResponse> verifyEmail(@RequestBody VerifyEmailRequest request) {
     return ResponseEntity.ok(authenticationService.verifyEmail(request.getCode()));
+  }
+
+  @ExceptionHandler(AuthenticationException.class)
+  public ResponseEntity<AuthenticationException> handleAuthenticationException(AuthenticationException ex) {
+    return ResponseEntity
+        .status(HttpStatus.UNAUTHORIZED)
+        .body(new AuthenticationException(ex.getMessage()));
   }
 }

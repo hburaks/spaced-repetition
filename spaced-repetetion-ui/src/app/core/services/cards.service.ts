@@ -318,7 +318,7 @@ export class CardsService {
         }))
       ),
       catchError((error) => {
-        this.errorService.showError();
+        this.errorService.showError(error);
         return throwError(() => error);
       })
     );
@@ -365,7 +365,7 @@ export class CardsService {
   getCardsForReview(): Observable<Card[]> {
     return this.http.get<Card[]>(`${this.apiUrl}/cards/review`).pipe(
       catchError((error) => {
-        this.errorService.showError();
+        this.errorService.showError(error);
         return throwError(() => error);
       })
     );
@@ -374,7 +374,7 @@ export class CardsService {
   createCard(card: CreateCardRequest): Observable<Card> {
     return this.http.post<Card>(`${this.apiUrl}/cards`, card).pipe(
       catchError((error) => {
-        this.errorService.showError();
+        this.errorService.showError(error);
         return throwError(() => error);
       })
     );
@@ -398,7 +398,7 @@ export class CardsService {
       .post<Card>(`${this.apiUrl}/cards/${review.cardId}/review`, review)
       .pipe(
         catchError((error) => {
-          this.errorService.showError();
+          this.errorService.showError(error);
           return throwError(() => error);
         })
       );
