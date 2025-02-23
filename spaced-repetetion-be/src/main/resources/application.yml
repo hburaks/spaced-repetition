@@ -1,18 +1,16 @@
 spring:
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+    include: secret
   datasource:
-    url: jdbc:postgresql://localhost:5432/spacedrepetition
-    username: hburaks
+    url: ${DATABASE_URL}
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
+    show-sql: false
   security:
     jwt:
-      secret-key: 5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437
-      expiration: 86400000
+      secret: ${JWT_SECRET}
   application:
     name: spaced-repetition-be
   mail:
@@ -24,8 +22,6 @@ spring:
           auth: true
           starttls:
             enable: true
-  profiles:
-    include: secret
 
 server:
   port: 8080
