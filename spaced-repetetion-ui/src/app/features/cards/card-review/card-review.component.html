@@ -12,7 +12,7 @@
   <ng-container *ngIf="!isLoading; else loading">
     <ng-container *ngIf="currentCard; else noCards">
       <div class="card-container">
-        <div class="card" [class.flipped]="showAnswer" [class.reviewed-incorrectly]="currentCard?.reviewedTodayIncorrectly">
+        <div class="card" [class.flipped]="showAnswer" [class.reviewed-incorrectly]="currentCard.reviewedTodayIncorrectly">
           <div class="card-face front">
             <h2>Question</h2>
             <p>{{currentCard.front}}</p>
