@@ -1,0 +1,29 @@
+spring:
+  datasource:
+    url: ${DATABASE_URL}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+  security:
+    jwt:
+      secret: ${JWT_SECRET}
+      expiration: 86400000
+  mail:
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+
+server:
+  port: ${PORT:8080}
+  servlet:
+    context-path: /api
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    org.hibernate: ERROR
+
+cors:
+  allowed-origin-patterns:
+    - https://spaced-repetition-65wojry65-hburaks-projects.vercel.app 
