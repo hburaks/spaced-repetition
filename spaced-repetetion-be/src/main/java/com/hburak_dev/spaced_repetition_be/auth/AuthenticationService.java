@@ -25,6 +25,28 @@ public class AuthenticationService {
   private final EmailService emailService;
 
   public AuthResponse register(String email, String password, String fullName) {
+    var existingUser = userRepository.findByEmail(email);
+
+    if (existingUser.isPresent()) {
+      User user = existingUser.get();
+      if (user.isEmailVerified()) {
+        throw new RuntimeException("Email already registered. Please login.");
+      } else {
+        // Update verification code and resend email
+        user.setVerificationCode(generateVerificationCode());
+        userRepository.save(user);
+        emailService.sendVerificationEmail(email, fullName, user.getVerificationCode());
+
+        return AuthResponse.builder()
+            .user(UserDto.builder()
+                .email(user.getEmail())
+                .fullName(user.getFullName())
+                .build())
+            .requiresVerification(true)
+            .build();
+      }
+    }
+
     var user = User.builder()
         .email(email)
         .password(passwordEncoder.encode(password))
