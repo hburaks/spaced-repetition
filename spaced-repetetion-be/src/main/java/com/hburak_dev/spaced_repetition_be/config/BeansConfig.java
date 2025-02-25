@@ -56,9 +56,12 @@ public class BeansConfig {
         configuration.setAllowedHeaders(Arrays.asList(
             "Authorization",
             "Content-Type",
-            "Accept"
+            "Accept",
+            "X-Forwarded-Proto",
+            "X-Forwarded-For"
         ));
         configuration.setAllowCredentials(false);
+        configuration.setMaxAge(3600L);
         
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
