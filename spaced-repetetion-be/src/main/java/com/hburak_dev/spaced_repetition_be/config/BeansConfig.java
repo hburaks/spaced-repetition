@@ -56,9 +56,8 @@ public class BeansConfig {
         configuration.setAllowedHeaders(Arrays.asList(
             "Authorization",
             "Content-Type",
-            "Accept",
-            "X-Forwarded-Proto",
-            "X-Forwarded-For"
+                "Accept",
+                    "X-Forwarded-For"
         ));
         configuration.setAllowCredentials(false);
         configuration.setMaxAge(3600L);
