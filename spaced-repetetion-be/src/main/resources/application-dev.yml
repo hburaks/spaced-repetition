@@ -22,4 +22,7 @@ logging:
 
 cors:
   allowed-origin-patterns:
+    - https://spaced-repetition-coral.vercel.app
+    - https://*.vercel.app
+    - https://*.now.sh
     - http://localhost:4200 

@@ -46,6 +46,7 @@ logging:
 
 cors:
   allowed-origin-patterns:
-    - https://spaced-repetition-65wojry65-hburaks-projects.vercel.app
+    - https://spaced-repetition-coral.vercel.app
     - https://*.vercel.app
-    - https://*.now.sh 
+    - https://*.now.sh
+    - http://localhost:4200
