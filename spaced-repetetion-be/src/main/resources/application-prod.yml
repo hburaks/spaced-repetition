@@ -33,10 +33,16 @@ server:
   port: 8080
   servlet:
     context-path: /api
+  ssl:
+    enabled: false  # Fly.io SSL terminasyonu yapıyor
+  forward-headers-strategy: NATIVE
   tomcat:
     max-threads: 20
     min-spare-threads: 5
     max-connections: 50
+    remoteip:
+      remote-ip-header: X-Forwarded-For
+      protocol-header: X-Forwarded-Proto
 
 logging:
   level:
