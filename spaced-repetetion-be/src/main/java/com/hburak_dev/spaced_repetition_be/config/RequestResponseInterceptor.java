@@ -19,6 +19,7 @@ public class RequestResponseInterceptor implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+        httpServletResponse.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
         logger.info("Incoming request - {} {} ", httpServletRequest.getMethod(), httpServletRequest.getRequestURL());
         chain.doFilter(request, response);
         logger.info("Response sent with status code = {} {} ", httpServletResponse.getStatus(), httpServletRequest.getRequestURL());

@@ -34,6 +34,10 @@ public class SecurityConfig {
                 .requiresChannel(channel -> channel
                         .requestMatchers(r -> r.getHeader("X-Forwarded-Proto") != null)
                         .requiresSecure())
+                .headers(headers -> headers
+                        .httpStrictTransportSecurity()
+                        .includeSubDomains(true)
+                        .maxAgeInSeconds(31536000))
                 .authorizeHttpRequests(req -> req
                         .requestMatchers("/api/auth/**", "/api/health/**").permitAll()
                         .requestMatchers("/api/tags/**", "/api/cards/**").hasAnyAuthority("ROLE_USER")
