@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://your-railway-url/api'
+  apiUrl: import.meta.env.VITE_API_URL,
 };
