@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: ${DATABASE_URL}?sslmode=verify-full
+    url: ${DATABASE_URL}?sslmode=disable
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
     hikari:
