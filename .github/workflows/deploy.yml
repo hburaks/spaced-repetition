@@ -21,7 +21,7 @@ jobs:
 
     - name: Build and push Docker image
       env:
-        IMAGE_NAME: ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:latest
+        IMAGE_NAME: ${{ secrets.DOCKER_HUB_USERNAME }}/spaced-repetition-hub:latest
       run: |
         docker build -t $IMAGE_NAME -f spaced-repetetion-be/Dockerfile spaced-repetetion-be
         docker push $IMAGE_NAME
