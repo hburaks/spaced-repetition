@@ -12,5 +12,9 @@ import java.util.List;
 @Getter
 @Setter
 public class CorsProperties {
-  private List<String> allowedOriginPatterns;
+  private List<String> allowedOrigins;
+  private List<String> allowedMethods;
+  private List<String> allowedHeaders;
+  private boolean allowCredentials;
+  private Long maxAge;
 }

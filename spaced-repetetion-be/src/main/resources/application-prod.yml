@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: ${DATABASE_URL}?sslmode=disable
+    url: ${DATABASE_URL}
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
     hikari:
@@ -24,29 +24,9 @@ spring:
   security:
     jwt:
       secret: ${JWT_SECRET}
-      expiration: 86400000
   mail:
     username: ${MAIL_USERNAME}
     password: ${MAIL_PASSWORD}
-
-server:
-  port: 8080
-  servlet:
-    context-path: /api
-  ssl:
-    enabled-protocols: TLSv1.3
-    ciphers: >
-      TLS_AES_128_GCM_SHA256,
-      TLS_AES_256_GCM_SHA384,
-      TLS_CHACHA20_POLY1305_SHA256
-  forward-headers-strategy: NATIVE
-  tomcat:
-    max-threads: 20
-    min-spare-threads: 5
-    max-connections: 50
-    remoteip:
-      remote-ip-header: X-Forwarded-For
-      protocol-header: X-Forwarded-Proto
 
 logging:
   level:
@@ -55,8 +35,5 @@ logging:
     org.hibernate: ERROR
 
 cors:
-  allowed-origin-patterns:
+  allowed-origins:
     - https://spaced-repetition-coral.vercel.app
-    - https://*.vercel.app
-    - https://*.now.sh
-    - http://localhost:4200

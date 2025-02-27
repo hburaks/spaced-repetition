@@ -29,20 +29,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource))
-                .csrf(AbstractHttpConfigurer::disable)
-                .requiresChannel(channel -> channel
-                        .requestMatchers(r -> r.getHeader("X-Forwarded-Proto") != null)
-                        .requiresSecure())
-                .headers(headers -> headers
-                        .httpStrictTransportSecurity()
-                        .includeSubDomains(true)
-                        .maxAgeInSeconds(31536000))
+                        .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .authorizeHttpRequests(req -> req
                         .requestMatchers("/api/auth/**", "/api/health/**").permitAll()
                         .requestMatchers("/api/tags/**", "/api/cards/**").hasAnyAuthority("ROLE_USER")
-                        .anyRequest().authenticated())
-                .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
+                                        .anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
