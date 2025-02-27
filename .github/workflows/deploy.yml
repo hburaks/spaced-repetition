@@ -25,6 +25,7 @@ jobs:
       run: |
         docker build -t $IMAGE_NAME -f spaced-repetetion-be/Dockerfile spaced-repetetion-be
         docker push $IMAGE_NAME
+        
 
   deploy:
     runs-on: ubuntu-latest
