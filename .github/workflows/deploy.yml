@@ -38,9 +38,9 @@ jobs:
         username: ec2-user
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
-          docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/spaced-repetition-hub:latest
           docker stop spaced-repetition-hub || true
           docker rm spaced-repetition-hub || true
+          docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/spaced-repetition-hub:latest
           docker run -d --name spaced-repetition-hub -p 80:8080 \
             -e DATABASE_URL=${{ secrets.DATABASE_URL }} \
             -e DATABASE_USERNAME=${{ secrets.DATABASE_USERNAME }} \
