@@ -1,4 +1,3 @@
-# flyctl launch added from .gitignore
 **/HELP.md
 **/target
 !**/.mvn/wrapper/maven-wrapper.jar
@@ -35,4 +34,3 @@ nbdist
 
 # Sensitive configuration
 **/src/main/resources/application-secret.yml
-fly.toml

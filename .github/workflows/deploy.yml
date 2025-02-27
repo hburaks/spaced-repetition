@@ -1,0 +1,51 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - be-deploy 
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+    - name: Build and push Docker image
+      env:
+        IMAGE_NAME: ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:latest
+      run: |
+        docker build -t $IMAGE_NAME .
+        docker push $IMAGE_NAME
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+    - name: Deploy to EC2
+      uses: appleboy/ssh-action@v0.1.3
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ec2-user
+        key: ${{ secrets.EC2_SSH_KEY }}
+        script: |
+          docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:latest
+          docker stop myapp || true
+          docker rm myapp || true
+          docker run -d --name myapp -p 80:8080 \
+            -e DATABASE_URL=${{ secrets.DATABASE_URL }} \
+            -e DATABASE_USERNAME=${{ secrets.DATABASE_USERNAME }} \
+            -e DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }} \
+            -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
+            -e MAIL_USERNAME=${{ secrets.MAIL_USERNAME }} \
+            -e MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }} \
+            ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:latest
