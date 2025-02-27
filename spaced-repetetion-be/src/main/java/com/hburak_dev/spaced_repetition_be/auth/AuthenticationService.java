@@ -1,22 +1,23 @@
 package com.hburak_dev.spaced_repetition_be.auth;
 
+import java.util.Random;
+
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
 import com.hburak_dev.spaced_repetition_be.auth.dto.AuthResponse;
 import com.hburak_dev.spaced_repetition_be.auth.dto.UserDto;
-import com.hburak_dev.spaced_repetition_be.user.User;
-import com.hburak_dev.spaced_repetition_be.user.UserRepository;
 import com.hburak_dev.spaced_repetition_be.email.EmailService;
 import com.hburak_dev.spaced_repetition_be.exception.AuthenticationException;
 import com.hburak_dev.spaced_repetition_be.security.JwtService;
 import com.hburak_dev.spaced_repetition_be.user.Role;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.stereotype.Service;
-import com.hburak_dev.spaced_repetition_be.exception.BusinessException;
+import com.hburak_dev.spaced_repetition_be.user.User;
+import com.hburak_dev.spaced_repetition_be.user.UserRepository;
 
-import java.util.Random;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor

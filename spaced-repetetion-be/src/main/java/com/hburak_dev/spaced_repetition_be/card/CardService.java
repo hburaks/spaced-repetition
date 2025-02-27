@@ -1,19 +1,20 @@
 package com.hburak_dev.spaced_repetition_be.card;
 
-import com.hburak_dev.spaced_repetition_be.card.dto.CardDto;
-import com.hburak_dev.spaced_repetition_be.user.User;
-import com.hburak_dev.spaced_repetition_be.user.UserService;
-import com.hburak_dev.spaced_repetition_be.tag.Tag;
-import com.hburak_dev.spaced_repetition_be.tag.TagRepository;
-import com.hburak_dev.spaced_repetition_be.tag.TagService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.Set;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.hburak_dev.spaced_repetition_be.card.dto.CardDto;
+import com.hburak_dev.spaced_repetition_be.tag.Tag;
+import com.hburak_dev.spaced_repetition_be.tag.TagRepository;
+import com.hburak_dev.spaced_repetition_be.tag.TagService;
+import com.hburak_dev.spaced_repetition_be.user.User;
+import com.hburak_dev.spaced_repetition_be.user.UserService;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @Transactional
@@ -44,7 +45,6 @@ public class CardService {
   public CardDto createCard(String front, String back, List<String> tagNames) {
     User currentUser = userService.getCurrentUser();
 
-    // Get or create tags for the current user
     List<Tag> tags = tagNames.stream()
         .map(name -> tagRepository.findByNameAndUser(name, currentUser)
             .orElseGet(() -> tagRepository.save(Tag.builder()
