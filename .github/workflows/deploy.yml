@@ -40,8 +40,8 @@ jobs:
         script: |
           docker stop spaced-repetition-hub || true
           docker rm spaced-repetition-hub || true
-          docker image prune -f
           docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/spaced-repetition-hub:latest
+          docker image prune -f
           MAIL_PWD=$(echo '${{ secrets.MAIL_PASSWORD }}' | sed 's/ /\\ /g')
           docker run -d --name spaced-repetition-hub -p 80:8080 \
             -e DATABASE_URL=${{ secrets.DATABASE_URL }} \
