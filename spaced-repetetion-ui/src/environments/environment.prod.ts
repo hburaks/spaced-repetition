@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://spaced-repetition-be.fly.dev/api',
+  apiUrl: 'http://spaced-repetition-be.fly.dev/api',
 };
