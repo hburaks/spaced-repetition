@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://spaced-repetition-be.fly.dev/api',
+  apiUrl: '${NEXT_PUBLIC_API_URL}',
+  hmacSecret: '${HMAC_SECRET}',
 };
