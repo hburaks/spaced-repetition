@@ -45,4 +45,5 @@ jobs:
             -e DATABASE_URL=${{ secrets.DATABASE_URL }} \
             -e DATABASE_USERNAME=${{ secrets.DATABASE_USERNAME }} \
             -e DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }} \
+            -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
             ${{ secrets.DOCKER_HUB_USERNAME }}/spaced-repetition-hub:latest
