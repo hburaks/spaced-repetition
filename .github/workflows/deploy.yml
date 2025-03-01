@@ -42,10 +42,4 @@ jobs:
           docker rm spaced-repetition-hub || true
           docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/spaced-repetition-hub:latest
           docker run -d --name spaced-repetition-hub -p 80:8080 \
-            -e DATABASE_URL=${{ secrets.DATABASE_URL }} \
-            -e DATABASE_USERNAME=${{ secrets.DATABASE_USERNAME }} \
-            -e DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }} \
-            -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
-            -e MAIL_USERNAME=${{ secrets.MAIL_USERNAME }} \
-            -e MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }} \
             ${{ secrets.DOCKER_HUB_USERNAME }}/spaced-repetition-hub:latest
