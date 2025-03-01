@@ -1,28 +1,55 @@
 spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 1
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
     properties:
       hibernate:
-        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        generate_statistics: false
+        jdbc.batch_size: 25
+        order_updates: true
+        order_inserts: true
+        connection:
+          provider_disables_autocommit: true
+    open-in-view: false
   security:
     jwt:
-      expiration: 86400000
-
-server:
-  port: 8080
-  servlet:
-    context-path: /api
+      secret: ${JWT_SECRET}
+  mail:
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
 
 logging:
   level:
+    root: INFO
+    org.springframework.web: INFO
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.springframework.mail: DEBUG
 
 cors:
-  allowed-origin-patterns:
+  allowed-origins:
     - https://spaced-repetition-coral.vercel.app
-    - https://*.vercel.app
-    - https://*.now.sh
-    - http://localhost:4200 
+    - http://localhost:4200
+  allowed-methods:
+    - GET
+    - POST
+    - PUT
+    - DELETE
+    - OPTIONS
+  allowed-headers:
+    - Authorization
+    - Content-Type
+    - Accept
+    - X-Forwarded-For
+  allow-credentials: false
+  max-age: 3600
